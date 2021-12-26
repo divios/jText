@@ -1,0 +1,4 @@
+name: JText
+version: '${version}'
+main: io.github.divios.jtext.JText
+api-version: 1.18
