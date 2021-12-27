@@ -11,17 +11,41 @@ public class Template {
     private final String matcher;
     private final Supplier<String> replacer;
 
-    public Template(String matcher, Supplier<String> replacer) {
-        this.matcher = matcher;
-        this.replacer = replacer;
-    }
-
     public static Template of(String matcher, String replacer) {
         return new Template(matcher, () -> replacer);
     }
 
+    public static Template of(String matcher, char replacer) {
+        return new Template(matcher, () -> String.valueOf(replacer));
+    }
+
+    public static Template of(String mather, double replacer) {
+        return new Template(mather, () -> String.valueOf(replacer));
+    }
+
+    public static Template of(String mather, int replacer) {
+        return new Template(mather, () -> String.valueOf(replacer));
+    }
+
+    public static Template of(String mather, long replacer) {
+        return new Template(mather, () -> String.valueOf(replacer));
+    }
+
+    public static Template of(String mather, float replacer) {
+        return new Template(mather, () -> String.valueOf(replacer));
+    }
+
+    public static Template of(String mather, boolean replacer) {
+        return new Template(mather, () -> String.valueOf(replacer));
+    }
+
     public static Template of(String matcher, Supplier<String> replacer) {
         return new Template(matcher, replacer);
+    }
+
+    private Template(String matcher, Supplier<String> replacer) {
+        this.matcher = matcher;
+        this.replacer = replacer;
     }
 
     public String getMatcher() {
