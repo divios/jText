@@ -1,17 +1,34 @@
 package io.github.divios.jtext;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import io.github.divios.jtext.wrappers.Template;
 
-public final class JText extends JavaPlugin {
+import java.util.HashMap;
+import java.util.Map;
 
-    @Override
-    public void onEnable() {
-        // Plugin startup logic
+public final class JText {
 
+    private static final Map<String, JTextBuilder> cache = new HashMap<>();
+
+    static {
+        cache.put("default", JTextBuilder.getDefault());
     }
 
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
+    public static String parse(String s, Template... templates) {
+        return cache.get("default")
+                .withTemplate(templates)
+                .parse(s, null);
     }
+
+    public static JTextBuilder builder() {
+        return cache.get("default");
+    }
+
+    public static void register(String key, JTextBuilder builder) {
+        cache.put(key, builder);
+    }
+
+    public static JTextBuilder get(String key) {
+        return cache.get(key);
+    }
+
 }

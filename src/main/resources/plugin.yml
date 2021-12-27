@@ -1,4 +1,5 @@
 name: JText
 version: '${version}'
 main: io.github.divios.jtext.JText
-api-version: 1.18
+api-version: 1.13
+softdepend: [ PlaceholderAPI ]

@@ -1,0 +1,15 @@
+Jtext.parse("&cSome string <parse>", Template.of("parse", "value"))    // Replaces the template and colors, the default tags are <>
+
+JText.builder()
+    .withTag("<", ">")
+    .withTemplate("stock", getStock())
+    .withTemplate(Template.of(...))
+    .withTemplates(Arrays.of(...))
+    .parsePlaceholderApi()
+    .parseHexColors()
+    .parseChatColors()      // It should be a default
+    .parse("Some String");
+
+
+
+
