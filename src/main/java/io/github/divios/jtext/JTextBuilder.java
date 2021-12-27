@@ -41,7 +41,7 @@ public class JTextBuilder implements Cloneable {
     }
 
     public JTextBuilder withTemplate(Template... templates) {
-        return withTemplates(List.of(templates));
+        return withTemplates(Arrays.asList(templates));
     }
 
     public JTextBuilder withTemplates(Collection<Template> templates) {
@@ -117,17 +117,20 @@ public class JTextBuilder implements Cloneable {
             Pattern pattern = Pattern.compile(tag.startTag + "(.*?)" + tag.endtag);
             Matcher matcher = pattern.matcher(bufferStr);
 
+            int pos = 0;
             while (matcher.find()) {
                 String match = matcher.group(1);
 
                 for (Template template : templates) {
                     if (template.getMatcher().equalsIgnoreCase(match)) {
-                        matcher.appendReplacement(buffer, template.getReplacer());
+                        buffer.append(bufferStr, pos, matcher.start());
+                        pos = matcher.end();
+                        buffer.append(template.getReplacer());
                         break;
                     }
                 }
             }
-            bufferStr = matcher.appendTail(buffer).toString();
+            bufferStr = buffer.append(bufferStr, pos, bufferStr.length()).toString();
         }
 
         if (parseLegacyColors) bufferStr = new legacyColorsParser().parse(bufferStr);
