@@ -6,7 +6,15 @@ import java.util.function.Supplier;
 /**
  * Class to hold the mather and replacer strings.
  */
-public record Template(String matcher, Supplier<String> replacer) {
+public class Template {
+
+    private final String matcher;
+    private final Supplier<String> replacer;
+
+    public Template(String matcher, Supplier<String> replacer) {
+        this.matcher = matcher;
+        this.replacer = replacer;
+    }
 
     public static Template of(String matcher, String replacer) {
         return new Template(matcher, () -> replacer);

@@ -1,14 +1,13 @@
 package io.github.divios.jtext;
 
-import io.github.divios.jtext.parsers.legacyColorsParser;
 import io.github.divios.jtext.parsers.HexColorParser;
 import io.github.divios.jtext.parsers.PlaceholderApiParser;
+import io.github.divios.jtext.parsers.legacyColorsParser;
 import io.github.divios.jtext.wrappers.Template;
 import org.bukkit.Color;
 import org.bukkit.entity.Player;
 
 import java.util.*;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -161,10 +160,18 @@ public class JTextBuilder implements Cloneable {
     }
 
 
-    record Tag(String startTag, String endtag) {
+    static class Tag {
+
+        private final String startTag;
+        private final String endtag;
 
         public static Tag of(String startTag, String endtag) {
             return new Tag(startTag, endtag);
+        }
+
+        private Tag(String startTag, String endtag) {
+            this.startTag = startTag;
+            this.endtag = endtag;
         }
 
         @Override
