@@ -149,8 +149,8 @@ public class JTextBuilder {
 
         if (parseLegacyColors) bufferStr = new legacyColorsParser().parse(bufferStr);
         if (parseHexColors) bufferStr = new HexColorParser().parse(bufferStr);
-        if (parsePlaceholdersAPI) bufferStr = new PlaceholderApiParser().parse(s, p);
-        if (parseWithMiniText) bufferStr = MiniMessage.miniMessage().parse(bufferStr).toString();
+        if (parsePlaceholdersAPI) bufferStr = new PlaceholderApiParser().parse(bufferStr, p);
+        if (parseWithMiniText) bufferStr = MiniMessage.miniMessage().parse(bufferStr).insertion();
 
         return bufferStr;
     }
