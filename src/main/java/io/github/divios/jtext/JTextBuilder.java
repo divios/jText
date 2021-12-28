@@ -4,7 +4,6 @@ import io.github.divios.jtext.parsers.HexColorParser;
 import io.github.divios.jtext.parsers.PlaceholderApiParser;
 import io.github.divios.jtext.parsers.legacyColorsParser;
 import io.github.divios.jtext.wrappers.Template;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Color;
 import org.bukkit.entity.Player;
 
@@ -15,8 +14,23 @@ import java.util.regex.Pattern;
 @SuppressWarnings("unused")
 public class JTextBuilder {
 
+    private static final Map<String, Template> defaultValues;
+
+    private static final legacyColorsParser legacyParser = new legacyColorsParser();
+    private static final HexColorParser hexParser = new HexColorParser();
+    private static final PlaceholderApiParser papiParser = new PlaceholderApiParser();
+
+    static {
+        defaultValues = new HashMap<>();
+
+        for (defaultTemplates value : defaultTemplates.values()) {
+            defaultValues.put(value.name(), Template.of(value.name(), value.getValue()));
+            defaultValues.put(value.name().toLowerCase(), Template.of(value.name().toLowerCase(), value.getValue()));
+        }
+    }
+
     private final Set<Tag> tags = new HashSet<>();
-    private final Set<Template> templates = new HashSet<>();
+    private final Map<String, Template> templates = new HashMap<>();
     private boolean parseLegacyColors = true;
     private boolean parseHexColors = false;
     private boolean parsePlaceholdersAPI = false;
@@ -38,7 +52,7 @@ public class JTextBuilder {
 
     public JTextBuilder withTemplate(String key, String replacer) {
         JTextBuilder clone = copy();
-        clone.templates.add(Template.of(key, replacer));
+        clone.templates.put(key, Template.of(key, replacer));
         return clone;
     }
 
@@ -48,7 +62,7 @@ public class JTextBuilder {
 
     public JTextBuilder withTemplates(Collection<Template> templates) {
         JTextBuilder clone = copy();
-        clone.templates.addAll(templates);
+        templates.forEach(template -> clone.templates.put(template.getMatcher(), template));
         return clone;
     }
 
@@ -80,8 +94,8 @@ public class JTextBuilder {
         return Collections.unmodifiableSet(tags);
     }
 
-    public Set<Template> getTemplates() {
-        return Collections.unmodifiableSet(templates);
+    public Collection<Template> getTemplates() {
+        return Collections.unmodifiableCollection(templates.values());
     }
 
     public boolean isParseLegacyColors() {
@@ -135,22 +149,21 @@ public class JTextBuilder {
             while (matcher.find()) {
                 String match = matcher.group(1);
 
-                for (Template template : templates) {
-                    if (template.getMatcher().equalsIgnoreCase(match)) {
-                        buffer.append(bufferStr, pos, matcher.start());
-                        pos = matcher.end();
-                        buffer.append(template.getReplacer());
-                        break;
-                    }
+                Template template;
+                if ((template = defaultValues.get(match)) != null ||
+                        (template = templates.get(match)) != null) {
+                    buffer.append(bufferStr, pos, matcher.start());
+                    pos = matcher.end();
+                    buffer.append(template.getReplacer());
                 }
             }
             bufferStr = buffer.append(bufferStr, pos, bufferStr.length()).toString();
         }
 
-        if (parseLegacyColors) bufferStr = new legacyColorsParser().parse(bufferStr);
-        if (parseHexColors) bufferStr = new HexColorParser().parse(bufferStr);
-        if (parsePlaceholdersAPI) bufferStr = new PlaceholderApiParser().parse(bufferStr, p);
-        if (parseWithMiniText) bufferStr = MiniMessage.miniMessage().parse(bufferStr).insertion();
+        if (parseLegacyColors) bufferStr = legacyParser.parse(bufferStr);
+        if (parseHexColors) bufferStr = hexParser.parse(bufferStr);
+        if (parsePlaceholdersAPI) bufferStr = papiParser.parse(bufferStr, p);
+        if (parseWithMiniText) bufferStr = bufferStr;
 
         return bufferStr;
     }
@@ -172,7 +185,7 @@ public class JTextBuilder {
         JTextBuilder clone = new JTextBuilder();
 
         clone.tags.addAll(tags);
-        clone.templates.addAll(templates);
+        clone.templates.putAll(templates);
 
         clone.parseLegacyColors = parseLegacyColors;
         clone.parseHexColors = parseHexColors;
@@ -219,38 +232,42 @@ public class JTextBuilder {
     }
 
     private enum defaultTemplates {
-        black(toColor(java.awt.Color.black)),
-        blue(toColor(java.awt.Color.blue)),
-        cyan(toColor(java.awt.Color.cyan)),
-        darkGray(toColor(java.awt.Color.darkGray)),
-        green(toColor(java.awt.Color.green)),
-        lightGray(toColor(java.awt.Color.lightGray)),
-        magenta(toColor(java.awt.Color.magenta)),
-        pink(toColor(java.awt.Color.pink)),
-        red(toColor(java.awt.Color.red)),
-        white(toColor(java.awt.Color.white)),
-        yellow(toColor(java.awt.Color.yellow)),
-        aqua(Color.AQUA),
-        fuchsia(Color.FUCHSIA),
-        lime(Color.LIME),
-        maroon(Color.MAROON),
-        navy(Color.NAVY),
-        olive(Color.OLIVE),
-        orange(Color.ORANGE),
-        purple(Color.PURPLE),
-        silver(Color.SILVER),
-        teal(Color.TEAL);
 
-        private final Color color;
+        black(rgbToValue(java.awt.Color.black.getRGB())),
+        blue(rgbToValue(java.awt.Color.blue.getRGB())),
+        cyan(rgbToValue(java.awt.Color.cyan.getRGB())),
+        darkGray(rgbToValue(java.awt.Color.darkGray.getRGB())),
+        green(rgbToValue(java.awt.Color.green.getRGB())),
+        lightGray(rgbToValue(java.awt.Color.lightGray.getRGB())),
+        magenta(rgbToValue(java.awt.Color.magenta.getRGB())),
+        pink(rgbToValue(java.awt.Color.pink.getRGB())),
+        red(rgbToValue(java.awt.Color.red.getRGB())),
+        white(rgbToValue(java.awt.Color.white.getRGB())),
+        yellow(rgbToValue(java.awt.Color.yellow.getRGB())),
+        aqua(rgbToValue(Color.AQUA.asRGB())),
+        fuchsia(rgbToValue(Color.FUCHSIA.asRGB())),
+        lime(rgbToValue(Color.LIME.asRGB())),
+        maroon(rgbToValue(Color.MAROON.asRGB())),
+        navy(rgbToValue(Color.NAVY.asRGB())),
+        olive(rgbToValue(Color.OLIVE.asRGB())),
+        orange(rgbToValue(Color.ORANGE.asRGB())),
+        purple(rgbToValue(Color.PURPLE.asRGB())),
+        silver(rgbToValue(Color.SILVER.asRGB())),
+        teal(rgbToValue(Color.TEAL.asRGB()));
 
-        private static Color toColor(java.awt.Color color) {
-            return Color.fromRGB(color.getRGB());
+        private final String value;
+
+        private static String rgbToValue(int rgb) {
+            return hexParser.parse("#" + Integer.toHexString(rgb).substring(2));
         }
 
-        defaultTemplates(Color color) {
-            this.color = color;
+        defaultTemplates(String value) {
+            this.value = value;
         }
 
+        public String getValue() {
+            return value;
+        }
     }
 
 }

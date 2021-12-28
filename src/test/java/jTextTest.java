@@ -85,7 +85,7 @@ public class jTextTest {
         String strExpected = "Renovated dirt of shop drops";
         String actual = builder.parse(str);
 
-        System.out.printf("Time: %d ms\n", (new Timestamp(System.currentTimeMillis()).getTime() - timer.getTime()));
+        System.out.printf("Time: %d nanos\n", (new Timestamp(System.currentTimeMillis()).getNanos() - timer.getNanos()));
         Assert.assertEquals(strExpected, actual);
     }
 
@@ -137,6 +137,23 @@ public class jTextTest {
 
         List<String> str = Arrays.asList("Renovated {item} of shop <shop>", "{player} destroyed the block <block>");
         List<String> strExpected = Arrays.asList("Renovated dirt of shop drops", "{player} destroyed the block COBBLESTONE");
+        List<String> actual = builder.parse(str);
+
+        System.out.printf("Time: %d ms\n", (new Timestamp(System.currentTimeMillis()).getTime() - timer.getTime()));
+        Assert.assertEquals(strExpected, actual);
+    }
+
+    @Test
+    public void testTemplate9() {
+        Timestamp timer = new Timestamp(System.currentTimeMillis());
+        JTextBuilder builder = JText.builder()
+                .withTag("\\{", "\\}")
+                .withTemplate(Template.of("shop", "drops"))
+                .withTemplate(Template.of("item", "dirt"))
+                .withTemplate("block", "COBBLESTONE");
+
+        List<String> str = Arrays.asList("Renovated <yellow> {item} of shop <shop>", "{player} destroyed the block <block>");
+        List<String> strExpected = Arrays.asList("Renovated §f§f§f§f§0§0 dirt of shop drops", "{player} destroyed the block COBBLESTONE");
         List<String> actual = builder.parse(str);
 
         System.out.printf("Time: %d ms\n", (new Timestamp(System.currentTimeMillis()).getTime() - timer.getTime()));
