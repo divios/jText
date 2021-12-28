@@ -3,6 +3,7 @@ package io.github.divios.jtext;
 import io.github.divios.jtext.parsers.HexColorParser;
 import io.github.divios.jtext.parsers.PlaceholderApiParser;
 import io.github.divios.jtext.parsers.legacyColorsParser;
+import io.github.divios.jtext.parsers.miniTextParser;
 import io.github.divios.jtext.wrappers.Template;
 import org.bukkit.Color;
 import org.bukkit.entity.Player;
@@ -19,6 +20,7 @@ public class JTextBuilder {
     private static final legacyColorsParser legacyParser = new legacyColorsParser();
     private static final HexColorParser hexParser = new HexColorParser();
     private static final PlaceholderApiParser papiParser = new PlaceholderApiParser();
+    private static final miniTextParser miniTxtParser = new miniTextParser();
 
     static {
         defaultValues = new HashMap<>();
@@ -141,13 +143,13 @@ public class JTextBuilder {
     public String parse(String s, Player p) {
         String bufferStr = s;
         for (Tag tag : tags) {
-            StringBuilder buffer = new StringBuilder(s.length() + 4 * 8);
-            Pattern pattern = Pattern.compile(tag.startTag + "(.*?)" + tag.endtag);
-            Matcher matcher = pattern.matcher(bufferStr);
+            final StringBuilder buffer = new StringBuilder(s.length() + 4 * 8);
+            final Pattern pattern = Pattern.compile(tag.startTag + "(.*?)" + tag.endtag);
+            final Matcher matcher = pattern.matcher(bufferStr);
 
             int pos = 0;
             while (matcher.find()) {
-                String match = matcher.group(1);
+                final String match = matcher.group(1);
 
                 Template template;
                 if ((template = defaultValues.get(match)) != null ||
@@ -160,10 +162,10 @@ public class JTextBuilder {
             bufferStr = buffer.append(bufferStr, pos, bufferStr.length()).toString();
         }
 
-        if (parseLegacyColors) bufferStr = legacyParser.parse(bufferStr);
-        if (parseHexColors) bufferStr = hexParser.parse(bufferStr);
+        //if (parseHexColors) bufferStr = hexParser.parse(bufferStr);
+        if (parseWithMiniText) bufferStr = miniTxtParser.parse(bufferStr);
         if (parsePlaceholdersAPI) bufferStr = papiParser.parse(bufferStr, p);
-        if (parseWithMiniText) bufferStr = bufferStr;
+        if (parseLegacyColors) bufferStr = legacyParser.parse(bufferStr);
 
         return bufferStr;
     }
