@@ -4,6 +4,7 @@ import io.github.divios.jtext.parsers.HexColorParser;
 import io.github.divios.jtext.parsers.PlaceholderApiParser;
 import io.github.divios.jtext.parsers.legacyColorsParser;
 import io.github.divios.jtext.wrappers.Template;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Color;
 import org.bukkit.entity.Player;
 
@@ -12,13 +13,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @SuppressWarnings("unused")
-public class JTextBuilder implements Cloneable {
+public class JTextBuilder {
 
     private final Set<Tag> tags = new HashSet<>();
     private final Set<Template> templates = new HashSet<>();
     private boolean parseLegacyColors = true;
     private boolean parseHexColors = false;
     private boolean parsePlaceholdersAPI = false;
+    private boolean parseWithMiniText = false;
 
     static JTextBuilder getDefault() {
         return new JTextBuilder();
@@ -29,13 +31,13 @@ public class JTextBuilder implements Cloneable {
     }
 
     public JTextBuilder withTag(String startTag, String endTag) {
-        JTextBuilder clone = clone();
+        JTextBuilder clone = copy();
         clone.tags.add(Tag.of(startTag, endTag));
         return clone;
     }
 
     public JTextBuilder withTemplate(String key, String replacer) {
-        JTextBuilder clone = clone();
+        JTextBuilder clone = copy();
         clone.templates.add(Template.of(key, replacer));
         return clone;
     }
@@ -45,26 +47,32 @@ public class JTextBuilder implements Cloneable {
     }
 
     public JTextBuilder withTemplates(Collection<Template> templates) {
-        JTextBuilder clone = clone();
+        JTextBuilder clone = copy();
         clone.templates.addAll(templates);
         return clone;
     }
 
     public JTextBuilder parseChatColors() {
-        JTextBuilder clone = clone();
+        JTextBuilder clone = copy();
         clone.parseLegacyColors = true;
         return clone;
     }
 
     public JTextBuilder parseHexColors() {
-        JTextBuilder clone = clone();
+        JTextBuilder clone = copy();
         clone.parseHexColors = true;
         return clone;
     }
 
     public JTextBuilder parsePlaceholderAPI() {
-        JTextBuilder clone = clone();
+        JTextBuilder clone = copy();
         clone.parsePlaceholdersAPI = true;
+        return clone;
+    }
+
+    public JTextBuilder parseWithMiniText() {
+        JTextBuilder clone = copy();
+        clone.parseWithMiniText = true;
         return clone;
     }
 
@@ -89,20 +97,26 @@ public class JTextBuilder implements Cloneable {
     }
 
     public JTextBuilder setParseLegacyColors(boolean parseLegacyColors) {
-        JTextBuilder clone = clone();
+        JTextBuilder clone = copy();
         clone.parseLegacyColors = parseLegacyColors;
         return clone;
     }
 
     public JTextBuilder setParseHexColors(boolean parseHexColors) {
-        JTextBuilder clone = clone();
+        JTextBuilder clone = copy();
         clone.parseHexColors = parseHexColors;
         return clone;
     }
 
     public JTextBuilder setParsePlaceholdersAPI(boolean parsePlaceholdersAPI) {
-        JTextBuilder clone = clone();
+        JTextBuilder clone = copy();
         clone.parsePlaceholdersAPI = parsePlaceholdersAPI;
+        return clone;
+    }
+
+    public JTextBuilder setParseWithMiniText(boolean parseWithMiniText) {
+        JTextBuilder clone = copy();
+        clone.parseWithMiniText = parseWithMiniText;
         return clone;
     }
 
@@ -136,6 +150,7 @@ public class JTextBuilder implements Cloneable {
         if (parseLegacyColors) bufferStr = new legacyColorsParser().parse(bufferStr);
         if (parseHexColors) bufferStr = new HexColorParser().parse(bufferStr);
         if (parsePlaceholdersAPI) bufferStr = new PlaceholderApiParser().parse(s, p);
+        if (parseWithMiniText) bufferStr = MiniMessage.miniMessage().parse(bufferStr).toString();
 
         return bufferStr;
     }
@@ -153,13 +168,17 @@ public class JTextBuilder implements Cloneable {
         return parsedList;
     }
 
-    @Override
-    public JTextBuilder clone() {
-        try {
-            return (JTextBuilder) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }
+    private JTextBuilder copy() {
+        JTextBuilder clone = new JTextBuilder();
+
+        clone.tags.addAll(tags);
+        clone.templates.addAll(templates);
+
+        clone.parseLegacyColors = parseLegacyColors;
+        clone.parseHexColors = parseHexColors;
+        clone.parsePlaceholdersAPI = parsePlaceholdersAPI;
+
+        return clone;
     }
 
 

@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 /**
  * Class to hold the mather and replacer strings.
  */
+@SuppressWarnings("unused")
 public class Template {
 
     private final String matcher;

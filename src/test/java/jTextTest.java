@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class jTextTest {
 
@@ -100,6 +101,42 @@ public class jTextTest {
 
         List<String> str = Arrays.asList("Renovated {item} of shop <shop>", "{player} destroyed the block <block>");
         List<String> strExpected = Arrays.asList("Renovated dirt of shop drops", "DiviosX destroyed the block COBBLESTONE");
+        List<String> actual = builder.parse(str);
+
+        System.out.printf("Time: %d ms\n", (new Timestamp(System.currentTimeMillis()).getTime() - timer.getTime()));
+        Assert.assertEquals(strExpected, actual);
+    }
+
+    @Test
+    public void testTemplate7() {
+        JTextBuilder builder = JText.builder()
+                .withTag("\\{", "\\}")
+                .withTemplate(Template.of("shop", "drops"))
+                .withTemplate(Template.of("item", "dirt"))
+                .withTemplate("player", "DiviosX")
+                .withTemplate("block", "COBBLESTONE");
+
+        List<String> str = Arrays.asList("Renovated {item} of shop <shop>", "{player} destroyed the block <block>");
+        List<String> strExpected = Arrays.asList("Renovated dirt of shop drops", "DiviosX destroyed the block COBBLESTONE");
+        List<String> actual = str.stream()
+                .parallel()
+                .map(builder::parse)
+                .collect(Collectors.toList());
+
+        Assert.assertEquals(strExpected, actual);
+    }
+
+    @Test
+    public void testTemplate8() {
+        Timestamp timer = new Timestamp(System.currentTimeMillis());
+        JTextBuilder builder = JText.builder()
+                .withTag("\\{", "\\}")
+                .withTemplate(Template.of("shop", "drops"))
+                .withTemplate(Template.of("item", "dirt"))
+                .withTemplate("block", "COBBLESTONE");
+
+        List<String> str = Arrays.asList("Renovated {item} of shop <shop>", "{player} destroyed the block <block>");
+        List<String> strExpected = Arrays.asList("Renovated dirt of shop drops", "{player} destroyed the block COBBLESTONE");
         List<String> actual = builder.parse(str);
 
         System.out.printf("Time: %d ms\n", (new Timestamp(System.currentTimeMillis()).getTime() - timer.getTime()));
