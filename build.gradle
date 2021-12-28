@@ -36,8 +36,8 @@ dependencies {
     compileOnly 'me.clip:placeholderapi:2.11.1'
 
     implementation 'org.jetbrains:annotations:22.0.0'
-    implementation "net.kyori:adventure-text-minimessage:4.2.0-SNAPSHOT"
-    implementation 'net.kyori:adventure-platform-bukkit:4.0.0'
+    implementation "net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT"
+    implementation 'net.kyori:adventure-platform-bukkit:4.0.1'
 
     testImplementation('junit:junit:4.13.2')
     testImplementation "org.mockito:mockito-core:1.9.5"

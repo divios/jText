@@ -6,12 +6,16 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public class miniTextParser {
 
-    public String parse(String s) {
+    private static final MiniMessage builder = MiniMessage.builder()
+            .markdown()
+            .build();
+
+    public String parse(final String s) {
         return LegacyComponentSerializer.legacyAmpersand().serialize(
-                MiniMessage.miniMessage().parse(s));
+                builder.parse(s));
     }
 
-    public Component unParse(String s) {
+    public Component unParse(final String s) {
         return LegacyComponentSerializer.legacyAmpersand().deserialize(s);
     }
 
