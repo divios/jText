@@ -9,9 +9,9 @@ Here is an example of the API;
 
 ```java
 JTextBuilder builder=JText.builder()                // By default, the tag <> is enabled
-        .withTag("\\{","\\}")                       // Add your custom tag
-        .withTemplate(Template.of("shop","drops"))  // The first value is the text to replace
-        .withTemplate("item","dirt")                // and the second is the replacer
+        .withTag("\\{", "\\}")                       // Add your custom tag
+        .withTemplate(Template.of("shop", "drops"))  // The first value is the text to replace
+        .withTemplate("item", "dirt")                // and the second is the replacer
         .parseHexColors();                          // Enable hex colors parse
 
         String toParse = "You bought 1 of {item} of {shop}"
