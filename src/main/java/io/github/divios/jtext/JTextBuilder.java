@@ -153,7 +153,8 @@ public class JTextBuilder {
 
                 Template template;
                 if ((template = defaultValues.get(match)) != null ||
-                        (template = templates.get(match)) != null) {
+                        (template = templates.get(match)) != null ||
+                        (parseHexColors && (template = hexParser.parseAsTemplate(match)) != null)) {
                     buffer.append(bufferStr, pos, matcher.start());
                     pos = matcher.end();
                     buffer.append(template.getReplacer());
@@ -162,7 +163,6 @@ public class JTextBuilder {
             bufferStr = buffer.append(bufferStr, pos, bufferStr.length()).toString();
         }
 
-        //if (parseHexColors) bufferStr = hexParser.parse(bufferStr);
         if (parseWithMiniText) bufferStr = miniTxtParser.parse(bufferStr);
         if (parsePlaceholdersAPI) bufferStr = papiParser.parse(bufferStr, p);
         if (parseLegacyColors) bufferStr = legacyParser.parse(bufferStr);
@@ -255,7 +255,8 @@ public class JTextBuilder {
         orange(rgbToValue(Color.ORANGE.asRGB())),
         purple(rgbToValue(Color.PURPLE.asRGB())),
         silver(rgbToValue(Color.SILVER.asRGB())),
-        teal(rgbToValue(Color.TEAL.asRGB()));
+        teal(rgbToValue(Color.TEAL.asRGB())),
+        bold("§l");
 
         private final String value;
 

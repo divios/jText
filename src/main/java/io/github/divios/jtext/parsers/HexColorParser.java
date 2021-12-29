@@ -1,6 +1,8 @@
 package io.github.divios.jtext.parsers;
 
+import io.github.divios.jtext.wrappers.Template;
 import net.md_5.bungee.api.ChatColor;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,4 +32,11 @@ public class HexColorParser {
     public String unparse(String s) {
         return "#" + ChatColor.stripColor(s);
     }
+
+    public @Nullable Template parseAsTemplate(final String s) {
+        if (!(s.startsWith("#") && s.length() == 7)) return null;
+
+        return Template.of(s, parse(s));
+    }
+
 }
