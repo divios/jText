@@ -153,7 +153,7 @@ public class jTextTest {
                 .withTemplate("block", "COBBLESTONE");
 
         List<String> str = Arrays.asList("Renovated <yellow> {item} of shop <shop>", "{player} destroyed the block <block>");
-        List<String> strExpected = Arrays.asList("Renovated §f§f§f§f§0§0 dirt of shop drops", "{player} destroyed the block COBBLESTONE");
+        List<String> strExpected = Arrays.asList("Renovated §x§f§f§f§f§0§0 dirt of shop drops", "{player} destroyed the block COBBLESTONE");
         List<String> actual = builder.parse(str);
 
         System.out.printf("Time: %d ms\n", (new Timestamp(System.currentTimeMillis()).getTime() - timer.getTime()));
@@ -170,7 +170,7 @@ public class jTextTest {
                 .parseHexColors();
 
         String str = "Renovated <#00FFD1>items of shop drops";
-        String expected = "Renovated §0§0§f§f§d§1items of shop drops";
+        String expected = "Renovated §x§0§0§F§F§D§1items of shop drops";
         String actual = builder.parse(str);
 
         Assert.assertEquals(expected, actual);
@@ -187,7 +187,7 @@ public class jTextTest {
                 .parseWithMiniText();
 
         String str = "Renovated <#00FFD1>items of shop <yellow><bold>drops";
-        String expected = "Renovated §0§0§f§f§d§1items of shop §f§f§f§f§0§0§ldrops";
+        String expected = "Renovated §x§0§0§F§F§D§1items of shop §x§f§f§f§f§0§0§ldrops";
         String actual = builder.parse(str);
 
         Assert.assertEquals(expected, actual);

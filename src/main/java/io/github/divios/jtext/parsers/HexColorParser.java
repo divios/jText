@@ -21,12 +21,12 @@ public class HexColorParser {
             String group = matcher.group();
             buffer.append(s, pos, matcher.start());
             pos = matcher.end();
-            buffer.append("" + COLOR_CHAR + group.charAt(1)
+            buffer.append(COLOR_CHAR + "x" + COLOR_CHAR + group.charAt(1)
                     + COLOR_CHAR + group.charAt(2) + COLOR_CHAR + group.charAt(3)
                     + COLOR_CHAR + group.charAt(4) + COLOR_CHAR + group.charAt(5)
                     + COLOR_CHAR + group.charAt(6));
         }
-        return ChatColor.translateAlternateColorCodes(COLOR_CHAR, buffer.append(s, pos, s.length()).toString());
+        return buffer.append(s, pos, s.length()).toString();
     }
 
     public String unparse(String s) {
