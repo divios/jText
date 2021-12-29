@@ -24,7 +24,7 @@ PlaceholderApi is supported natively, you just have to call `parsePlaceholderAPI
 the `parse()` function, just like this:
 
 ```java
-JTextBuilder builder=JText.builder()
+JTextBuilder builder = JText.builder()
         .parsePlaceholderAPI();
 
         builder.parse(str, parse);
