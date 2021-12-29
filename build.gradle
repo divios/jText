@@ -1,13 +1,12 @@
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'com.github.johnrengelman.shadow' version '7.0.0'
 }
 
 apply plugin: 'maven-publish'
 
 group = 'io.github.divios'
-version = '2.0'
+version = '2.1'
 
 sourceCompatibility = 1.8 // java 8
 targetCompatibility = 1.8
@@ -36,8 +35,6 @@ dependencies {
     compileOnly 'me.clip:placeholderapi:2.11.1'
 
     implementation 'org.jetbrains:annotations:22.0.0'
-    implementation "net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT"
-    implementation 'net.kyori:adventure-platform-bukkit:4.0.1'
 
     testImplementation('junit:junit:4.13.2')
     testImplementation "org.mockito:mockito-core:1.9.5"
@@ -56,10 +53,6 @@ processResources {
     }
 }
 
-shadowJar {
-    relocate 'net.kyori', 'io.github.divios.jText.dependencies.kyori'
-}
-
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -71,5 +64,4 @@ publishing {
     }
 }
 
-build.dependsOn shadowJar
 compileJava.dependsOn(clean)

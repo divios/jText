@@ -3,8 +3,8 @@ package io.github.divios.jtext;
 import io.github.divios.jtext.parsers.HexColorParser;
 import io.github.divios.jtext.parsers.PlaceholderApiParser;
 import io.github.divios.jtext.parsers.legacyColorsParser;
-import io.github.divios.jtext.parsers.miniTextParser;
 import io.github.divios.jtext.wrappers.Template;
+import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.entity.Player;
 
@@ -20,7 +20,6 @@ public class JTextBuilder {
     private static final legacyColorsParser legacyParser = new legacyColorsParser();
     private static final HexColorParser hexParser = new HexColorParser();
     private static final PlaceholderApiParser papiParser = new PlaceholderApiParser();
-    private static final miniTextParser miniTxtParser = new miniTextParser();
 
     static {
         defaultValues = new HashMap<>();
@@ -36,7 +35,6 @@ public class JTextBuilder {
     private boolean parseLegacyColors = true;
     private boolean parseHexColors = false;
     private boolean parsePlaceholdersAPI = false;
-    private boolean parseWithMiniText = false;
 
     static JTextBuilder getDefault() {
         return new JTextBuilder();
@@ -86,12 +84,6 @@ public class JTextBuilder {
         return clone;
     }
 
-    public JTextBuilder parseWithMiniText() {
-        JTextBuilder clone = copy();
-        clone.parseWithMiniText = true;
-        return clone;
-    }
-
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
     }
@@ -130,12 +122,6 @@ public class JTextBuilder {
         return clone;
     }
 
-    public JTextBuilder setParseWithMiniText(boolean parseWithMiniText) {
-        JTextBuilder clone = copy();
-        clone.parseWithMiniText = parseWithMiniText;
-        return clone;
-    }
-
     public String parse(String s) {
         return parse(s, null);
     }
@@ -163,7 +149,6 @@ public class JTextBuilder {
             bufferStr = buffer.append(bufferStr, pos, bufferStr.length()).toString();
         }
 
-        if (parseWithMiniText) bufferStr = miniTxtParser.parse(bufferStr);
         if (parsePlaceholdersAPI) bufferStr = papiParser.parse(bufferStr, p);
         if (parseLegacyColors) bufferStr = legacyParser.parse(bufferStr);
 
@@ -256,7 +241,20 @@ public class JTextBuilder {
         purple(rgbToValue(Color.PURPLE.asRGB())),
         silver(rgbToValue(Color.SILVER.asRGB())),
         teal(rgbToValue(Color.TEAL.asRGB())),
-        bold("§l");
+        dark_aqua(ChatColor.DARK_AQUA.toString()),
+        dark_blue(ChatColor.DARK_BLUE.toString()),
+        dark_gray(ChatColor.DARK_GRAY.toString()),
+        dark_green(ChatColor.DARK_GREEN.toString()),
+        dark_purple(ChatColor.DARK_PURPLE.toString()),
+        dark_red(ChatColor.DARK_RED.toString()),
+        light_purple(ChatColor.LIGHT_PURPLE.toString()),
+        gold(ChatColor.GOLD.toString()),
+        magic(ChatColor.MAGIC.toString()),
+        bold(ChatColor.BOLD.toString()),
+        italic(ChatColor.ITALIC.toString()),
+        underline(ChatColor.UNDERLINE.toString()),
+        strikethrough(ChatColor.STRIKETHROUGH.toString()),
+        reset(ChatColor.RESET.toString());
 
         private final String value;
 
@@ -271,6 +269,7 @@ public class JTextBuilder {
         public String getValue() {
             return value;
         }
+
     }
 
 }

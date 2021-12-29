@@ -177,14 +177,28 @@ public class jTextTest {
     }
 
     @Test
+    public void testDoNotParseHex() {
+        JTextBuilder builder = JText.builder()
+                .withTag("\\{", "\\}")
+                .withTemplate(Template.of("shop", "drops"))
+                .withTemplate(Template.of("item", "dirt"))
+                .withTemplate("block", "COBBLESTONE");
+
+        String str = "Renovated <#00FFD1>items of shop drops";
+        String expected = "Renovated <#00FFD1>items of shop drops";
+        String actual = builder.parse(str);
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
     public void testTemplate11() {
         JTextBuilder builder = JText.builder()
                 .withTag("\\{", "\\}")
                 .withTemplate(Template.of("shop", "drops"))
                 .withTemplate(Template.of("item", "dirt"))
                 .withTemplate("block", "COBBLESTONE")
-                .parseHexColors()
-                .parseWithMiniText();
+                .parseHexColors();
 
         String str = "Renovated <#00FFD1>items of shop <yellow><bold>drops";
         String expected = "Renovated §x§0§0§F§F§D§1items of shop §x§f§f§f§f§0§0§ldrops";
