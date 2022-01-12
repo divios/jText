@@ -3,6 +3,7 @@ package io.github.divios.jtext;
 import io.github.divios.jtext.parsers.HexColorParser;
 import io.github.divios.jtext.parsers.PlaceholderApiParser;
 import io.github.divios.jtext.parsers.legacyColorsParser;
+import io.github.divios.jtext.parsers.miniTextParser;
 import io.github.divios.jtext.wrappers.Template;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -20,6 +21,7 @@ public class JTextBuilder {
     private static final legacyColorsParser legacyParser = new legacyColorsParser();
     private static final HexColorParser hexParser = new HexColorParser();
     private static final PlaceholderApiParser papiParser = new PlaceholderApiParser();
+    private static final miniTextParser adventureParser = new miniTextParser();
 
     static {
         defaultValues = new HashMap<>();
@@ -35,6 +37,7 @@ public class JTextBuilder {
     private boolean parseLegacyColors = true;
     private boolean parseHexColors = false;
     private boolean parsePlaceholdersAPI = false;
+    private boolean parseAdventure = false;
 
     static JTextBuilder getDefault() {
         return new JTextBuilder();
@@ -84,6 +87,12 @@ public class JTextBuilder {
         return clone;
     }
 
+    public JTextBuilder parseWithAdventure() {
+        JTextBuilder clone = copy();
+        clone.parseAdventure = true;
+        return clone;
+    }
+
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
     }
@@ -104,6 +113,10 @@ public class JTextBuilder {
         return parsePlaceholdersAPI;
     }
 
+    public boolean isParseAdventure() {
+        return parseAdventure;
+    }
+
     public JTextBuilder setParseLegacyColors(boolean parseLegacyColors) {
         JTextBuilder clone = copy();
         clone.parseLegacyColors = parseLegacyColors;
@@ -119,6 +132,12 @@ public class JTextBuilder {
     public JTextBuilder setParsePlaceholdersAPI(boolean parsePlaceholdersAPI) {
         JTextBuilder clone = copy();
         clone.parsePlaceholdersAPI = parsePlaceholdersAPI;
+        return clone;
+    }
+
+    public JTextBuilder setParseAdventure(boolean parseAdventure) {
+        JTextBuilder clone = copy();
+        clone.parseAdventure = parseAdventure;
         return clone;
     }
 
@@ -150,6 +169,7 @@ public class JTextBuilder {
         }
 
         if (parsePlaceholdersAPI) bufferStr = papiParser.parse(bufferStr, p);
+        if (parseAdventure) bufferStr = adventureParser.parse(bufferStr);
         if (parseLegacyColors) bufferStr = legacyParser.parse(bufferStr);
 
         return bufferStr;

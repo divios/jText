@@ -4,6 +4,7 @@ import net.md_5.bungee.api.ChatColor;
 
 import java.awt.*;
 
+@SuppressWarnings("unused")
 public class gradientColorParser {
 
     public String parse(String s) {
@@ -14,11 +15,11 @@ public class gradientColorParser {
         return null;
     }
 
+
     /* Utils */
 
     @FunctionalInterface
     private interface Interpolator {
-
         double[] interpolate(double from, double to, int max);
     }
 

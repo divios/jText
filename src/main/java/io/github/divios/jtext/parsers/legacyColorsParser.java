@@ -11,4 +11,5 @@ public class legacyColorsParser {
     public String unparse(String s) {
         return ChatColor.stripColor(s);
     }
+
 }
