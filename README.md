@@ -8,14 +8,14 @@ for legacy ampersand minecraft colors, visual components to style your text and 
 Here is an example of the API;
 
 ```java
-JTextBuilder builder=JText.builder()      // By default, the tag <> is enabled
-        .withTag("\\{","\\}")      // Add your custom tag
-        .withTemplate(Template.of("shop","drops"))  // The first value is the text to replace
-        .withTemplate("item","dirt")               // and the second is the replacer
+JTextBuilder builder=JText.builder()                // By default, the tag <> is enabled
+        .withTag("\\{", "\\}")                       // Add your custom tag
+        .withTemplate(Template.of("shop", "drops"))  // The first value is the text to replace
+        .withTemplate("item", "dirt")                // and the second is the replacer
         .parseHexColors();                          // Enable hex colors parse
 
-        String toParse="You bought 1 of {item} of {shop}"
-        String parseString=builder.parse(toParse);   // Expected: You bought 1 of dirt of drops
+        String toParse = "You bought 1 of {item} of {shop}"
+        String parseString = builder.parse(toParse);   // Expected: You bought 1 of dirt of drops
 ```
 
 ## PlaceholderAPI
@@ -24,10 +24,10 @@ PlaceholderApi is supported natively, you just have to call `parsePlaceholderAPI
 the `parse()` function, just like this:
 
 ```java
-JTextBuilder builder=JText.builder()
+JTextBuilder builder = JText.builder()
         .parsePlaceholderAPI();
 
-        builder.parse(str,parse);
+        builder.parse(str, parse);
 ```
 
 ## Components
