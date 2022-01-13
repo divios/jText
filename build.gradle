@@ -6,7 +6,7 @@ plugins {
 apply plugin: 'maven-publish'
 
 group = 'io.github.divios'
-version = '2.4'
+version = '3.0'
 
 sourceCompatibility = 1.8 // java 8
 targetCompatibility = 1.8

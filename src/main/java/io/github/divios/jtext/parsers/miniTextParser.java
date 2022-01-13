@@ -8,17 +8,18 @@ public class miniTextParser {
     private static MiniMessage builder;
 
     public miniTextParser() {
-        builder = MiniMessage.miniMessage();
+        if (adventureIsInstalled())
+            builder = MiniMessage.miniMessage();
     }
 
     public String parse(final String s) {
-        if (!adventureIsInstalled()) return s;
+        if (builder != null) return s;
         return LegacyComponentSerializer.legacyAmpersand().serialize(
                 builder.parse(s));
     }
 
     public String unParse(final String s) {
-        if (!adventureIsInstalled()) return null;
+        if (builder != null) return null;
         return null;
     }
 
@@ -26,10 +27,8 @@ public class miniTextParser {
         try {
             Class.forName("net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer");
         } catch (ClassNotFoundException e) {
-            System.out.println("Adventure not found");
             return false;
         }
-        System.out.println("Adventure found");
         return true;
     }
 
