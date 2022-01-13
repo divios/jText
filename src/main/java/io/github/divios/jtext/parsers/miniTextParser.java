@@ -8,9 +8,7 @@ public class miniTextParser {
     private static MiniMessage builder;
 
     public miniTextParser() {
-        builder = MiniMessage.builder()
-                .markdown()
-                .build();
+        builder = MiniMessage.miniMessage();
     }
 
     public String parse(final String s) {
