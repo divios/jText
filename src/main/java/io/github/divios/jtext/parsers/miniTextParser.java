@@ -15,22 +15,26 @@ public class miniTextParser {
     }
 
     public String parse(final String s) {
-        if (!adventureIsInstalled()) return s;
+        System.out.println("Trying to parse with miniText");
+        if (builder == null) return s;
+        System.out.println("Parsed with miniText");
         return LegacyComponentSerializer.legacyAmpersand().serialize(
                 builder.parse(s));
     }
 
     public String unParse(final String s) {
-        if (!adventureIsInstalled()) return null;
+        if (builder == null) return null;
         return null;
     }
 
     private boolean adventureIsInstalled() {
         try {
-            Class.forName(" net.kyori.adventure");
+            Class.forName("net.kyori.adventure");
         } catch (ClassNotFoundException e) {
+            System.out.println("Adventure not found");
             return false;
         }
+        System.out.println("Adventure found");
         return true;
     }
 
