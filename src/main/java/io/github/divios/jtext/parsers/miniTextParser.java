@@ -24,7 +24,7 @@ public class miniTextParser {
 
     private boolean adventureIsInstalled() {
         try {
-            Class.forName("net.kyori.adventure.text.serializer");
+            Class.forName("net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer");
         } catch (ClassNotFoundException e) {
             System.out.println("Adventure not found");
             return false;
