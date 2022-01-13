@@ -13,13 +13,13 @@ public class miniTextParser {
     }
 
     public String parse(final String s) {
-        if (builder != null) return s;
+        if (builder == null) return s;
         return LegacyComponentSerializer.legacyAmpersand().serialize(
                 builder.parse(s));
     }
 
     public String unParse(final String s) {
-        if (builder != null) return null;
+        if (builder == null) return null;
         return null;
     }
 
