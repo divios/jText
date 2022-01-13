@@ -8,30 +8,25 @@ public class miniTextParser {
     private static MiniMessage builder;
 
     public miniTextParser() {
-        try {
-            builder = MiniMessage.builder()
-                    .markdown()
-                    .build();
-        } catch (Exception | Error ignored) {
-        }
+        builder = MiniMessage.builder()
+                .markdown()
+                .build();
     }
 
     public String parse(final String s) {
-        System.out.println("Trying to parse with miniText");
-        if (builder == null) return s;
-        System.out.println("Parsed with miniText");
+        if (!adventureIsInstalled()) return s;
         return LegacyComponentSerializer.legacyAmpersand().serialize(
                 builder.parse(s));
     }
 
     public String unParse(final String s) {
-        if (builder == null) return null;
+        if (!adventureIsInstalled()) return null;
         return null;
     }
 
     private boolean adventureIsInstalled() {
         try {
-            Class.forName("net.kyori.adventure");
+            Class.forName("net.kyori.adventure.text.serializer");
         } catch (ClassNotFoundException e) {
             System.out.println("Adventure not found");
             return false;
