@@ -8,10 +8,12 @@ public class miniTextParser {
     private static MiniMessage builder;
 
     public miniTextParser() {
-        if (builder == null && adventureIsInstalled())
+        try {
             builder = MiniMessage.builder()
                     .markdown()
                     .build();
+        } catch (Exception | Error ignored) {
+        }
     }
 
     public String parse(final String s) {
