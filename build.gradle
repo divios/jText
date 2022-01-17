@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id "com.github.johnrengelman.shadow" version "7.1.1"
 }
 
 apply plugin: 'maven-publish'
@@ -49,6 +50,13 @@ dependencies {
     testImplementation 'com.github.seeseemelk:MockBukkit-v1.16:1.5.2'
 }
 
+shadowJar {
+    relocate('org.jetbrains.annotations', 'io.github.divios.dependencies.annotations')
+    relocate('org.intellij', 'io.github.divios.dependencies.intellij')
+    relocate('net.kyori', 'io.github.divios.dependencies.miniText')
+
+    minimize()
+}
 
 processResources {
     def props = [version: version]
@@ -72,3 +80,4 @@ publishing {
 }
 
 compileJava.dependsOn(clean)
+build.dependsOn shadowJar
