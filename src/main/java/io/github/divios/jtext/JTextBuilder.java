@@ -188,6 +188,20 @@ public class JTextBuilder {
         return parsedList;
     }
 
+    public String unParse(String s) {
+        if (parseLegacyColors) s = legacyParser.unparse(s);
+
+        return s;
+    }
+
+    public List<String> unParse(List<String> list) {
+        List<String> aux = new ArrayList<>(list.size());
+        list.forEach(s -> aux.add(unParse(s)));
+
+        return aux;
+    }
+
+
     private JTextBuilder copy() {
         JTextBuilder clone = new JTextBuilder();
 

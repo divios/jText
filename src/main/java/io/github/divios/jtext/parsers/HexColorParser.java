@@ -30,7 +30,14 @@ public class HexColorParser {
     }
 
     public String unparse(String s) {
-        return "#" + ChatColor.stripColor(s);
+        char[] array = s.toCharArray();
+        for (int i = 0; i < array.length - 1; i++) {
+            if (array[i] == ChatColor.COLOR_CHAR && "0123456789AaBbCcDdEeFfKkLlMmNnOoRr".indexOf(array[i + 1]) != -1) {
+                array[i] = '&';
+                array[i + 1] = Character.toLowerCase(array[i + 1]);
+            }
+        }
+        return new String(array);
     }
 
     public @Nullable Template parseAsTemplate(final String s) {
