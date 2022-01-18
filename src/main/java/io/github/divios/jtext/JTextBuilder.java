@@ -2,7 +2,7 @@ package io.github.divios.jtext;
 
 import io.github.divios.jtext.parsers.HexColorParser;
 import io.github.divios.jtext.parsers.PlaceholderApiParser;
-import io.github.divios.jtext.parsers.legacyColorsParser;
+import io.github.divios.jtext.parsers.legacyColorParser;
 import io.github.divios.jtext.parsers.miniTextParser;
 import io.github.divios.jtext.wrappers.Template;
 import org.bukkit.ChatColor;
@@ -18,7 +18,7 @@ public class JTextBuilder {
 
     private static final Map<String, Template> defaultValues;
 
-    private static final legacyColorsParser legacyParser = new legacyColorsParser();
+    private static final legacyColorParser legacyParser = new legacyColorParser();
     private static final HexColorParser hexParser = new HexColorParser();
     private static final PlaceholderApiParser papiParser = new PlaceholderApiParser();
     private static final miniTextParser adventureParser = new miniTextParser();
