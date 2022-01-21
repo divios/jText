@@ -8,7 +8,7 @@ for legacy ampersand minecraft colors, visual components to style your text and 
 Here is an example of the API;
 
 ```java
-JTextBuilder builder=JText.builder()                // By default, the tag <> is enabled
+JTextBuilder builder = JText.builder()                // By default, the tag <> is enabled
         .withTag("\\{", "\\}")                       // Add your custom tag
         .withTemplate(Template.of("shop", "drops"))  // The first value is the text to replace
         .withTemplate("item", "dirt")                // and the second is the replacer
@@ -50,4 +50,56 @@ Hex colors are also supported via components, for example `<#ffc0db>This is hex 
 
 ![](https://i.imgur.com/Swu0njx.png)
 
-### Gradient
+# Instalation
+
+To get the jar, either download it from the releases tab either here on [GitHub](https://github.com/divios/jText/releases) or [build it locally](https://github.com/divios/jText#build-locally).
+
+## With Jitpack:
+
+Gradle:
+
+```groovy
+repositories {
+        maven { url 'https://jitpack.io' }
+}
+
+```
+
+```groovy
+dependencies {
+        compileOnly 'com.github.divios:jText:Tag'
+}
+```
+
+Maven:
+
+```xml
+<repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+</repository>
+```
+
+```xml
+<dependency>
+        <groupId>com.github.divios</groupId>
+        <artifactId>jText</artifactId>
+        <version>Tag</version>
+        <scope>provided</scope>
+</dependency>
+```
+Replace `Tag` with a release tag for jText. Example: `1.5`. You can also use `master` as the tag to get the latest version, though you will have to clear your maven caches in order to update it.
+
+## Build locally:
+
+For Windows, use Git Bash. For Linux or OSX, just ensure you have Git installed. Navigate to the directory where you want to clone the repository, and run:
+
+```
+git clone https://github.com/divios/jText
+cd Jtext
+./gradlew jar
+```
+
+After running these commands, the jar will be at `build/libs/jText.jar`.
+You may also need to add the jar to your classpath. After that, you should be good to go!
+
