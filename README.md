@@ -96,7 +96,7 @@ For Windows, use Git Bash. For Linux or OSX, just ensure you have Git installed.
 
 ```
 git clone https://github.com/divios/jText
-cd divios
+cd Jtext
 ./gradlew jar
 ```
 
