@@ -207,4 +207,21 @@ public class jTextTest {
         Assert.assertEquals(expected, actual);
     }
 
+    @Test
+    public void testTemplate12() {
+        JTextBuilder builder = JText.builder()
+                .withTag("\\{", "\\}")
+                .withTemplate(Template.of("shop", "drops"))
+                .withTemplate(Template.of("item", "dirt"))
+                .withTemplate("block", "COBBLESTONE")
+                .parseGradients()
+                .parseHexColors();
+
+        String str = "Renovated <gradient:#00FFD1:#581845>items</gradient> of shop <yellow><bold>drops";
+        String expected = "Renovated §x§0§0§f§f§d§1i§x§1§6§c§5§a§et§x§2§c§8§c§8§be§x§4§2§5§2§6§8m§x§5§8§1§8§4§5s of shop §x§f§f§f§f§0§0§ldrops";
+        String actual = builder.parse(str);
+
+        Assert.assertEquals(expected, actual);
+    }
+
 }

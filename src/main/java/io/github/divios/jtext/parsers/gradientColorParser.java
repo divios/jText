@@ -3,16 +3,34 @@ package io.github.divios.jtext.parsers;
 import net.md_5.bungee.api.ChatColor;
 
 import java.awt.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @SuppressWarnings("unused")
 public class gradientColorParser {
 
+    private static final Pattern GRADIENT_PATTERN = Pattern.compile("<gradient:((#[A-Fa-f0-9]{6}):(#[A-Fa-f0-9]{6})>(.*?))</gradient>");
+
     public String parse(String s) {
-        return null;
+        Matcher matcher = GRADIENT_PATTERN.matcher(s);
+        StringBuilder buffer = new StringBuilder(s.length() + 4 * 8);
+
+        int pos = 0;
+        while (matcher.find()) {
+            String startHex = matcher.group(2);
+            String endHex = matcher.group(3);
+            String text = matcher.group(4);
+
+            buffer.append(s, pos, matcher.start());
+            pos = matcher.end();
+
+            buffer.append(rgbGradient(text, Color.decode(startHex), Color.decode(endHex), this::linear));
+        }
+        return buffer.append(s, pos, s.length()).toString();
     }
 
     public String unparse(String s) {
-        return null;
+        return s; // Is not possible to unParse, not by normal means
     }
 
 

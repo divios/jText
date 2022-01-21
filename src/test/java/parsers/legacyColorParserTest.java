@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class legacyColorParserText {
+public class legacyColorParserTest {
 
     @Test
     public void testParse() {

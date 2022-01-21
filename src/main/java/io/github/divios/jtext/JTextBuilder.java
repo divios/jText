@@ -1,9 +1,6 @@
 package io.github.divios.jtext;
 
-import io.github.divios.jtext.parsers.HexColorParser;
-import io.github.divios.jtext.parsers.PlaceholderApiParser;
-import io.github.divios.jtext.parsers.legacyColorParser;
-import io.github.divios.jtext.parsers.miniTextParser;
+import io.github.divios.jtext.parsers.*;
 import io.github.divios.jtext.wrappers.Template;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -20,6 +17,7 @@ public class JTextBuilder {
 
     private static final legacyColorParser legacyParser = new legacyColorParser();
     private static final HexColorParser hexParser = new HexColorParser();
+    private static final gradientColorParser gradientParser = new gradientColorParser();
     private static final PlaceholderApiParser papiParser = new PlaceholderApiParser();
     private static final miniTextParser adventureParser = new miniTextParser();
 
@@ -36,6 +34,7 @@ public class JTextBuilder {
     private final Map<String, Template> templates = new HashMap<>();
     private boolean parseLegacyColors = true;
     private boolean parseHexColors = false;
+    private boolean parseGradients = false;
     private boolean parsePlaceholdersAPI = false;
     private boolean parseAdventure = false;
 
@@ -81,6 +80,12 @@ public class JTextBuilder {
         return clone;
     }
 
+    public JTextBuilder parseGradients() {
+        JTextBuilder clone = copy();
+        clone.parseGradients = true;
+        return clone;
+    }
+
     public JTextBuilder parsePlaceholderAPI() {
         JTextBuilder clone = copy();
         clone.parsePlaceholdersAPI = true;
@@ -109,6 +114,10 @@ public class JTextBuilder {
         return parseHexColors;
     }
 
+    public boolean isParseGradients() {
+        return parseGradients;
+    }
+
     public boolean isParsePlaceholdersAPI() {
         return parsePlaceholdersAPI;
     }
@@ -126,6 +135,12 @@ public class JTextBuilder {
     public JTextBuilder setParseHexColors(boolean parseHexColors) {
         JTextBuilder clone = copy();
         clone.parseHexColors = parseHexColors;
+        return clone;
+    }
+
+    public JTextBuilder setParseGradients(boolean parseGradients) {
+        JTextBuilder clone = copy();
+        clone.parseGradients = parseGradients;
         return clone;
     }
 
@@ -170,6 +185,7 @@ public class JTextBuilder {
 
         if (parsePlaceholdersAPI) bufferStr = papiParser.parse(bufferStr, p);
         if (parseAdventure) bufferStr = adventureParser.parse(bufferStr);
+        if (parseGradients) bufferStr = gradientParser.parse(bufferStr);
         if (parseLegacyColors) bufferStr = legacyParser.parse(bufferStr);
 
         return bufferStr;
@@ -210,11 +226,11 @@ public class JTextBuilder {
 
         clone.parseLegacyColors = parseLegacyColors;
         clone.parseHexColors = parseHexColors;
+        clone.parseGradients = parseGradients;
         clone.parsePlaceholdersAPI = parsePlaceholdersAPI;
 
         return clone;
     }
-
 
     static class Tag {
 
