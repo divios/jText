@@ -52,7 +52,7 @@ Hex colors are also supported via components, for example `<#ffc0db>This is hex 
 
 # Instalation
 
-To get the jar, either download it from the releases tab either here on [GitHub](https://github.com/divios/jCommands/releases) or [build it locally](https://github.com/divios/jCommands#build-locally).
+To get the jar, either download it from the releases tab either here on [GitHub](https://github.com/divios/jText/releases) or [build it locally](https://github.com/divios/jText#build-locally).
 
 ## With Jitpack:
 
