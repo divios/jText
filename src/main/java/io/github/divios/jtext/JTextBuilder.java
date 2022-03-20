@@ -185,7 +185,7 @@ public class JTextBuilder {
 
         if (parsePlaceholdersAPI) bufferStr = papiParser.parse(bufferStr, p);
         if (parseAdventure) bufferStr = adventureParser.parse(bufferStr);
-        if (parseGradients) bufferStr = gradientParser.parse(bufferStr);
+        if (parseGradients && JText.getVersion() >= 9) bufferStr = gradientParser.parse(bufferStr);
         if (parseLegacyColors) bufferStr = legacyParser.parse(bufferStr);
 
         return bufferStr;
