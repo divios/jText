@@ -1,6 +1,6 @@
 package io.github.divios.jtext.parsers;
 
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.ChatColor;
 
 import java.awt.*;
 import java.util.regex.Matcher;
@@ -49,6 +49,20 @@ public class gradientColorParser {
         return res;
     }
 
+    private void of(StringBuilder builder, Color color) {
+        String hex = String.format("%08x", color.getRGB()).substring(2);
+        System.out.println(hex);
+
+        builder.append(ChatColor.COLOR_CHAR + "x");
+        for (int i = 0; i < hex.length() - 1; i++) {
+            String aux = String.valueOf(hex.charAt(i));
+            builder.append(ChatColor.COLOR_CHAR).append(aux);
+        }
+
+        String lastValue = String.valueOf(hex.charAt(hex.length() - 1));
+        builder.append(ChatColor.COLOR_CHAR).append(lastValue);
+    }
+
     private String rgbGradient(String str, Color from, Color to, Interpolator interpolator) {
 
         // interpolate each component separately
@@ -61,11 +75,9 @@ public class gradientColorParser {
         // create a string that matches the input-string but has
         // the different color applied to each char
         for (int i = 0; i < str.length(); i++) {
-            builder.append(ChatColor.of(new Color(
-                            (int) Math.round(red[i]),
-                            (int) Math.round(green[i]),
-                            (int) Math.round(blue[i]))))
-                    .append(str.charAt(i));
+            Color color = new Color((int) Math.round(red[i]), (int) Math.round(green[i]), (int) Math.round(blue[i]));
+            of(builder, color);
+            builder.append(str.charAt(i));
         }
 
         return builder.toString();
