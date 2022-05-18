@@ -51,7 +51,6 @@ public class gradientColorParser {
 
     private void of(StringBuilder builder, Color color) {
         String hex = String.format("%08x", color.getRGB()).substring(2);
-        System.out.println(hex);
 
         builder.append(ChatColor.COLOR_CHAR + "x");
         for (int i = 0; i < hex.length() - 1; i++) {
