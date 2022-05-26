@@ -22,10 +22,6 @@ repositories {
         url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
     maven {
-        name = 'spigotmc-repo'
-        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
-    }
-    maven {
         name = 'placeholderapi'
         url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
     }
